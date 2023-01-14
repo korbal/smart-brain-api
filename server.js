@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+app.use(express.json());
 
 const database = {
   users: [
@@ -23,7 +24,7 @@ const database = {
 };
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.send(database.users);
 });
 
 // /signin --> POST = success/fail
@@ -36,13 +37,29 @@ app.post('/signin', (req, res) => {
   }
 });
 
+// /register --> POST = user
+app.post('/register', (req, res) => {
+  const { email, name, password } = req.body;
+  database.users.push({
+    id: '125',
+    name: name,
+    email: email,
+    password: password,
+    entries: 0,
+    joined: new Date()
+  });
+ 
+  res.json(database.users[database.users.length - 1]);}
+);
+
+
 
 app.listen(3000, () => console.log('Server is running on port 3000'));
 
 /*
 /--> res = this is working
 
-/register --> POST = user
+
 /profile/:userId --> GET = user
 /image --> PUT (updating the number of pics a user submitted so that we know the ranking) --> user
 */
