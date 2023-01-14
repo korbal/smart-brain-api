@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 app.use(express.json());
+const bcrypt = require('bcrypt-nodejs');
+const cors = require('cors');
 
 const database = {
   users: [
@@ -19,10 +21,23 @@ const database = {
       password: 'bananas',
       entries: 0,
       joined: new Date()
+    },
+    {
+      id: '125',
+      name: 'fasz',
+      email: 'fasz',
+      password: 'ff',
+      entries: 0,
+      joined: new Date()
+      
     }
   ],
 };
 
+// MIDDLEWARE
+app.use(cors());
+
+// / --> GET = this is working
 app.get('/', (req, res) => {
   res.send(database.users);
 });
@@ -40,6 +55,9 @@ app.post('/signin', (req, res) => {
 // /register --> POST = user
 app.post('/register', (req, res) => {
   const { email, name, password } = req.body;
+  bcrypt.hash(password, null, null, function(err, hash) {
+    console.log(hash);
+  });
   database.users.push({
     id: '125',
     name: name,
@@ -83,9 +101,5 @@ app.put('/image', (req, res) => {
   }
 });
 
+// PORT
 app.listen(3000, () => console.log('Server is running on port 3000'));
-
-/*
-
-/image --> PUT (updating the number of pics a user submitted so that we know the ranking) --> user
-*/
