@@ -3,6 +3,23 @@ const app = express();
 app.use(express.json());
 const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
+const knex = require('knex');
+
+const db  = knex({
+  client: 'pg',
+  connection: {
+    host : '127.0.0.1',
+    user : 'postgres',
+    password : 'lofasz',
+    database : 'smart-brain'
+  }
+});
+
+// connect to the database
+db.select('*').from('users').then(data => {
+  //console.log(data);
+});
+
 
 const database = {
   users: [
@@ -58,31 +75,34 @@ app.post('/register', (req, res) => {
   bcrypt.hash(password, null, null, function(err, hash) {
     console.log(hash);
   });
-  database.users.push({
-    id: '125',
-    name: name,
+
+  // tricky syntax, because first we insert the new user, and returning('*') means that we get back the whole user object, and then we can use it in the response
+  db('users')
+  .returning('*')
+  .insert({
     email: email,
-    
-    entries: 0,
+    name: name,
     joined: new Date()
-  });
- 
-  res.json(database.users[database.users.length - 1]);}
+  }).then(user =>  {
+    res.json(user[0]);
+  }).catch(err => res.status(400).json('unable to register'));
+
+  }
 );
 
 // /profile/:userId --> GET = user
 app.get('/profile/:userId', (req, res) => {
   const { userId } = req.params;
-  let found = false;
-  database.users.forEach(user => {
-    if(user.id === userId) {
-      found = true;
-      return res.json(user);
-    }
-  });
-  if(!found) {
+
+  // grab the user from the database
+  db.select('*').from('users').where({id: userId}).then(user => {
+    // javascript trick, if the user is not empty, then we can return the user
+    if(user.length) {
+    res.json(user[0]);
+  } else {
     res.status(400).json('not found');
   }
+  }).catch(err => res.status(400).json('error getting user'));
 });
 
 // /image --> PUT (updating the number of pics a user submitted so that we know the ranking) --> user
