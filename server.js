@@ -61,31 +61,65 @@ app.get('/', (req, res) => {
 
 // /signin --> POST = success/fail
 app.post('/signin', (req, res) => {
-  if(req.body.email === database.users[2].email &&
-    req.body.password === database.users[2].password) {
-    res.json(database.users[2]);
-  } else {
-    res.status(400).json('error logging in');
-  }
+  // if(req.body.email === database.users[2].email &&
+  //   req.body.password === database.users[2].password) {
+  //   res.json(database.users[2]);
+  // } else {
+  //   res.status(400).json('error logging in');
+  // }
+
+  db.select('email', 'hash').from('login')
+  .where('email', '=', req.body.email)
+  .then(data => {
+    const isValid = bcrypt.compareSync(req.body.password, data[0].hash)
+    console.log(isValid)
+    if(isValid) {
+      return db.select('*').from('users').where('email', '=', req.body.email)
+      .then(user => {
+        res.json(user[0])
+      })
+      .catch(err => res.status(400).json('unable to get user'))
+    } else {
+      res.status(400).json('wrong credentials')
+    }
+  })
+  .catch(err => res.status(400).json('wrong credentials'))
+  
 });
 
 // /register --> POST = user
 app.post('/register', (req, res) => {
   const { email, name, password } = req.body;
-  bcrypt.hash(password, null, null, function(err, hash) {
-    console.log(hash);
-  });
+  console.log('body', req.body)
+  console.log('password', password)
+  const hash = bcrypt.hashSync(password);
 
   // tricky syntax, because first we insert the new user, and returning('*') means that we get back the whole user object, and then we can use it in the response
-  db('users')
-  .returning('*')
-  .insert({
-    email: email,
-    name: name,
-    joined: new Date()
-  }).then(user =>  {
-    res.json(user[0]);
-  }).catch(err => res.status(400).json('unable to register'));
+
+  //transactions are used when we want to do multiple things at once, and if one of them fails, we want to rollback the whole thing
+  db.transaction(trx => {
+    trx.insert({
+      hash: hash,
+      email: email 
+    })
+    .into('login')
+    .returning('email')
+    .then(loginEmail => {
+        return trx('users')
+        .returning('*')
+        .insert({
+          email: loginEmail[0].email,
+          name: name,
+          joined: new Date()
+        }).then(user =>  {
+          res.json(user[0]);
+
+        })
+    })
+    .then(trx.commit)
+    .catch(trx.rollback)
+  })
+  .catch(err => res.status(400).json('unable to register'));
 
   }
 );
