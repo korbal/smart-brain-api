@@ -108,17 +108,15 @@ app.get('/profile/:userId', (req, res) => {
 // /image --> PUT (updating the number of pics a user submitted so that we know the ranking) --> user
 app.put('/image', (req, res) => {
   const { id } = req.body;
-  let found = false;
-  database.users.forEach(user => {
-    if(user.id === id) {
-      found = true;
-      user.entries++;
-      return res.json(user.entries);
-    }
-  });
-  if(!found) {
-    res.status(400).json('not found');
-  }
+  
+  db('users').where('id', '=', id)
+  .increment('entries', 1)
+  .returning('entries')
+  .then(entries => {
+    res.json(entries[0].entries)
+  })
+  .catch(err => res.status(400).json('unable to get entries'));
+
 });
 
 // PORT
