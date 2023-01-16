@@ -76,5 +76,7 @@ app.get('/profile/:userId', (req, res) => profile.handleProfileGet(req, res, db)
 // /image --> PUT (updating the number of pics a user submitted so that we know the ranking) --> user
 app.put('/image', (req, res) => { image.handleImage(req, res, db) });
 
+app.post('/imageurl', (req, res) => { image.handleApiCall(req, res) });
+
 // PORT
 app.listen(3000, () => console.log('Server is running on port 3000'));
