@@ -7,12 +7,12 @@ const handleRegsiter = (req, res, db, bcrypt) => {
   console.log('--------register---------')
   console.log('body', req.body)
   console.log('--------register---------')
-  //console.log('db', db)
+  
   const hash = bcrypt.hashSync(password);
 
   // tricky syntax, because first we insert the new user, and returning('*') means that we get back the whole user object, and then we can use it in the response
-
   //transactions are used when we want to do multiple things at once, and if one of them fails, we want to rollback the whole thing
+  
   db.transaction(trx => {
     trx.insert({
       hash: hash,

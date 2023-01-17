@@ -1,4 +1,3 @@
-
 const handleProfileGet = (req, res, db) => {
   const { userId } = req.params;
 

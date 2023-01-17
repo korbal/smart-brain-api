@@ -28,22 +28,7 @@ app.use(express.json());
 //   }
 // })
 
-// remote db
-// const db  = knex({
-//   client: 'pg',
-//   connection: {
-//     host : 'dpg-cf34qdun6mpkr6fum3ng-a.frankfurt-postgres.render.com',
-//     port: '5432',
-//     user : 'balint',
-//     password : 'tV5sHLU3OekN4WpE2Ze8IZAhM3ZcS05r',
-//     database : 'smartbrain_fq3d',
-//     ssl: true
-//   },
-//   pool: {
-//     min: 2,
-//     max: 10
-//   }
-// });
+
 
 // remote with env variable
 const db  = knex({
@@ -63,15 +48,15 @@ const db  = knex({
 });
 
 
-// connect to the database..
+// connect to the database
 try {
   db.select('*').from('users')
   .then(data => {
-    //console.log('db connected', data);
+  console.log('db connected', data);
     
   });
 } catch (error) {
-  console.log('Database is not connected');
+  console.log('Database is not connected. Error: ', error);
   
 }
 

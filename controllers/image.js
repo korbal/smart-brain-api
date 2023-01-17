@@ -1,12 +1,11 @@
-const Clarifai = require('clarifai');
 const axios = require('axios');
 
 /////////////////////////// Clarifai API /////////////////////////////////////
-const USER_ID = 'balint';
-const PAT = '1dad4a84dba04c308211a8634769017b';
+const USER_ID = process.env.CLARIFAI_USER_ID;
+const PAT = process.env.CLARIFAI_PAT;
 const APP_ID = 'ztmsmartbrain';
 const MODEL_ID = 'face-detection';
-
+/////////////////////////// Clarifai API /////////////////////////////////////
 
 const handleImage = (req, res, db) => {
   const { id } = req.body;
@@ -51,9 +50,6 @@ axios.post("https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs", data, 
     .then(boxdata => res.json(boxdata))
     .catch(err => res.status(400).json('unable to get entries'));
 }
-
-
-
 
 module.exports = {
   handleImage: handleImage,
