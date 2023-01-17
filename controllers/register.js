@@ -4,8 +4,8 @@ const handleRegsiter = (req, res, db, bcrypt) => {
   if (!email || !name || !password) {
     return res.status(400).json('incorrect form submission');
   }
-  // console.log('body', req.body)
-  // console.log('password', password)
+  console.log('body', req.body)
+  console.log('password', password)
   const hash = bcrypt.hashSync(password);
 
   // tricky syntax, because first we insert the new user, and returning('*') means that we get back the whole user object, and then we can use it in the response
