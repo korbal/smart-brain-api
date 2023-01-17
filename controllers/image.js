@@ -9,6 +9,7 @@ const MODEL_ID = 'face-detection';
 
 const handleImage = (req, res, db) => {
   const { id } = req.body;
+  console.log(USER_ID, PAT, APP_ID, MODEL_ID)
   
   db('users').where('id', '=', id)
   .increment('entries', 1)
