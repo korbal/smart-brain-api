@@ -9,7 +9,7 @@ const MODEL_ID = 'face-detection';
 
 const handleImage = (req, res, db) => {
   const { id } = req.body;
-  console.log(USER_ID, PAT, APP_ID, MODEL_ID)
+ 
   
   db('users').where('id', '=', id)
   .increment('entries', 1)
@@ -22,7 +22,8 @@ const handleImage = (req, res, db) => {
 
 const handleApiCall = (req, res) => {
   const { input } = req.body;
-
+  console.log(USER_ID, PAT, APP_ID, MODEL_ID)
+  
   const data = {
     "user_app_id": {
       "user_id": USER_ID,
