@@ -22,12 +22,16 @@ const db  = knex({
     password : 'lofasz',
     database : 'smart-brain'
   }
-});
+})
 
 // connect to the database
-db.select('*').from('users').then(data => {
-  //console.log(data);
-});
+try {
+  db.select('*').from('users').then(data => {
+    console.log('db connected', data);
+  });
+} catch (error) {
+  console.log('Database is not connected');
+}
 
 
 const database = {
@@ -60,12 +64,12 @@ const database = {
   ],
 };
 
-// MIDDLEWARE
+// MIDDLEWARE.
 app.use(cors());
 
 // / --> GET = this is working
 app.get('/', (req, res) => {
-  res.send(database.users);
+  res.send('it is working!');
 });
 
 // /signin --> POST = success/fail
@@ -85,4 +89,6 @@ app.post('/imageurl', (req, res) => { image.handleApiCall(req, res) });
 
 // PORT
 
-app.listen(3000, () => console.log(`Server is running on port 3000`));
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
