@@ -52,7 +52,7 @@ const db  = knex({
 try {
   db.select('*').from('users')
   .then(data => {
-  console.log('db connected', data);
+  console.log('db connected');
     
   });
 } catch (error) {

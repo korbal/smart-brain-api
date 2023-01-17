@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 /////////////////////////// Clarifai API /////////////////////////////////////
-const USER_ID = process.env.CLARIFAI_USER_ID;
+const USER_ID = 'balint';
 const PAT = process.env.CLARIFAI_PAT;
 const APP_ID = 'ztmsmartbrain';
 const MODEL_ID = 'face-detection';
