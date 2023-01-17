@@ -28,7 +28,7 @@ app.use(express.json());
 const db  = knex({
   client: 'pg',
   connection: {
-    host : 'dpg-cf34qdun6mpkr6fum3ng-a',
+    host : 'dpg-cf34qdun6mpkr6fum3ng-a.frankfurt-postgres.render.com',
     port: '5432',
     user : 'balint',
     password : 'tV5sHLU3OekN4WpE2Ze8IZAhM3ZcS05r',
