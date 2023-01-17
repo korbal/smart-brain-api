@@ -14,6 +14,7 @@ console.log(process.env.POSTGRES_PASSWORD);
 
 app.use(express.json());
 
+// local db
 // const db  = knex({
 //   client: 'pg',
 //   connection: {
@@ -24,7 +25,7 @@ app.use(express.json());
 //   }
 // })
 
-// postgres://balint:tV5sHLU3OekN4WpE2Ze8IZAhM3ZcS05r@dpg-cf34qdun6mpkr6fum3ng-a.frankfurt-postgres.render.com/smartbrain_fq3d
+// remote db
 const db  = knex({
   client: 'pg',
   connection: {
@@ -48,11 +49,11 @@ try {
   db.select('*').from('users')
   .then(data => {
     //console.log('db connected', data);
-    db.destroy();
+    
   });
 } catch (error) {
   console.log('Database is not connected');
-  db.destroy();
+  
 }
 
 

@@ -4,8 +4,10 @@ const handleRegsiter = (req, res, db, bcrypt) => {
   if (!email || !name || !password) {
     return res.status(400).json('incorrect form submission');
   }
+  console.log('--------register---------')
   console.log('body', req.body)
   console.log('password', password)
+  //console.log('db', db)
   const hash = bcrypt.hashSync(password);
 
   // tricky syntax, because first we insert the new user, and returning('*') means that we get back the whole user object, and then we can use it in the response
@@ -27,13 +29,12 @@ const handleRegsiter = (req, res, db, bcrypt) => {
           joined: new Date()
         }).then(user =>  {
           res.json(user[0]);
-
         })
     })
     .then(trx.commit)
     .catch(trx.rollback)
   })
-  .catch(err => res.status(400).json(err));
+  .catch(err => res.status(400).json('unable to register'));
   }
 
   module.exports = {

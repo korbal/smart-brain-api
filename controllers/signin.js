@@ -6,6 +6,9 @@
   //   res.status(400).json('error logging in');
   // }
   const { email, password } = req.body;
+  console.log('-----------------')
+  console.log('req.body: ', req.body)
+  console.log('-----------------')
   if(!email || !password) {
     return res.status(400).json('incorrect form submission');
   }
