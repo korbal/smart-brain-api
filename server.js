@@ -14,23 +14,45 @@ console.log(process.env.POSTGRES_PASSWORD);
 
 app.use(express.json());
 
+// const db  = knex({
+//   client: 'pg',
+//   connection: {
+//     host : '127.0.0.1',
+//     user : 'postgres',
+//     password : 'lofasz',
+//     database : 'smart-brain'
+//   }
+// })
+
+// postgres://balint:tV5sHLU3OekN4WpE2Ze8IZAhM3ZcS05r@dpg-cf34qdun6mpkr6fum3ng-a.frankfurt-postgres.render.com/smartbrain_fq3d
 const db  = knex({
   client: 'pg',
   connection: {
-    host : '127.0.0.1',
-    user : 'postgres',
-    password : 'lofasz',
-    database : 'smart-brain'
+    host : 'dpg-cf34qdun6mpkr6fum3ng-a.frankfurt-postgres.render.com',
+    port: '5432',
+    user : 'balint',
+    password : 'tV5sHLU3OekN4WpE2Ze8IZAhM3ZcS05r',
+    database : 'smartbrain_fq3d',
+    ssl: true
+  },
+  pool: {
+    min: 2,
+    max: 10
   }
-})
+});
 
-// connect to the database
+
+
+// connect to the database..
 try {
-  db.select('*').from('users').then(data => {
-    console.log('db connected', data);
+  db.select('*').from('users')
+  .then(data => {
+    //console.log('db connected', data);
+    db.destroy();
   });
 } catch (error) {
   console.log('Database is not connected');
+  db.destroy();
 }
 
 
@@ -87,7 +109,7 @@ app.put('/image', (req, res) => { image.handleImage(req, res, db) });
 
 app.post('/imageurl', (req, res) => { image.handleApiCall(req, res) });
 
-// PORT
+// PORT.
 
 const PORT = process.env.PORT || 3000;
 
