@@ -92,7 +92,9 @@ const database = {
 };
 
 // MIDDLEWARE.
-app.use(cors());
+//app.use(cors());
+app.use(cors({origin: 'https://balint-ztm-smartbrain.netlify.app'}));
+
 
 // / --> GET = this is working
 app.get('/', (req, res) => {
