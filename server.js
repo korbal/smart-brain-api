@@ -3,14 +3,17 @@ const app = express();
 const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 const knex = require('knex');
+
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
-const POSTGRES_PASSWORD = process.env.POSTGRES_PASSWORD;
 
-console.log(process.env.CLARIFY_PAT);
-console.log(process.env.POSTGRES_PASSWORD);
+const DB_HOST = process.env.DB_HOST;
+const DB_USER = process.env.DB_USER;
+const DB_PASSWORD = process.env.DB_PASSWORD;
+const DB_NAME = process.env.DB_NAME;
+
 
 app.use(express.json());
 
@@ -26,14 +29,31 @@ app.use(express.json());
 // })
 
 // remote db
+// const db  = knex({
+//   client: 'pg',
+//   connection: {
+//     host : 'dpg-cf34qdun6mpkr6fum3ng-a.frankfurt-postgres.render.com',
+//     port: '5432',
+//     user : 'balint',
+//     password : 'tV5sHLU3OekN4WpE2Ze8IZAhM3ZcS05r',
+//     database : 'smartbrain_fq3d',
+//     ssl: true
+//   },
+//   pool: {
+//     min: 2,
+//     max: 10
+//   }
+// });
+
+// remote with env variable
 const db  = knex({
   client: 'pg',
   connection: {
-    host : 'dpg-cf34qdun6mpkr6fum3ng-a.frankfurt-postgres.render.com',
+    host : DB_HOST,
     port: '5432',
-    user : 'balint',
-    password : 'tV5sHLU3OekN4WpE2Ze8IZAhM3ZcS05r',
-    database : 'smartbrain_fq3d',
+    user : DB_USER,
+    password : DB_PASSWORD,
+    database : DB_NAME,
     ssl: true
   },
   pool: {
@@ -41,7 +61,6 @@ const db  = knex({
     max: 10
   }
 });
-
 
 
 // connect to the database..

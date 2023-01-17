@@ -6,7 +6,7 @@ const handleRegsiter = (req, res, db, bcrypt) => {
   }
   console.log('--------register---------')
   console.log('body', req.body)
-  console.log('password', password)
+  console.log('--------register---------')
   //console.log('db', db)
   const hash = bcrypt.hashSync(password);
 

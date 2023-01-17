@@ -1,14 +1,10 @@
  const handleSignIn = (req, res, db, bcrypt) => {
-  // if(req.body.email === database.users[2].email &&
-  //   req.body.password === database.users[2].password) {
-  //   res.json(database.users[2]);
-  // } else {
-  //   res.status(400).json('error logging in');
-  // }
   const { email, password } = req.body;
-  console.log('-----------------')
+  
+  console.log('-------signin----------')
   console.log('req.body: ', req.body)
-  console.log('-----------------')
+  console.log('-------signin----------')
+  
   if(!email || !password) {
     return res.status(400).json('incorrect form submission');
   }
