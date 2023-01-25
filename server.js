@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 const knex = require('knex');
 const morgan = require('morgan');
+const helmet = require('helmet');
 
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
@@ -15,6 +16,8 @@ const DB_USER = process.env.DB_USER;
 const DB_PASSWORD = process.env.DB_PASSWORD;
 const DB_NAME = process.env.DB_NAME;
 
+//helmet middleware
+app.use(helmet())
 //logging middleware
 app.use(morgan('tiny'))
 //json middleware
