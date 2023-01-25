@@ -1,5 +1,6 @@
 const axios = require('axios');
 
+
 /////////////////////////// Clarifai API /////////////////////////////////////
 const USER_ID = 'balint';
 const PAT = process.env.CLARIFAI_PAT;

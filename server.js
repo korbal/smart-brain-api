@@ -3,6 +3,7 @@ const app = express();
 const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 const knex = require('knex');
+const morgan = require('morgan');
 
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
@@ -14,10 +15,12 @@ const DB_USER = process.env.DB_USER;
 const DB_PASSWORD = process.env.DB_PASSWORD;
 const DB_NAME = process.env.DB_NAME;
 
-
+//logging middleware
+app.use(morgan('tiny'))
+//json middleware
 app.use(express.json());
 
-// local db
+//local db - enable this for local development. disable when pushing to prod
 // const db  = knex({
 //   client: 'pg',
 //   connection: {
@@ -29,7 +32,7 @@ app.use(express.json());
 // })
 
 
-
+// enable this for prod. disable when pushing to local dev
 // remote with env variable
 const db  = knex({
   client: 'pg',
