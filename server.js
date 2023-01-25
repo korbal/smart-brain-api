@@ -99,7 +99,9 @@ const database = {
 
 // MIDDLEWARE.
 //app.use(cors());
-app.use(cors({origin: 'https://balint-ztm-smartbrain.netlify.app'}));
+//app.use(cors({origin: 'https://balint-ztm-smartbrain.netlify.app'}));
+app.use(cors({ origin: [/http:\/\/localhost:\d+/, 'https://balint-ztm-smartbrain.netlify.app'] }));
+
 
 
 // / --> GET = this is working
