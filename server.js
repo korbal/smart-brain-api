@@ -5,6 +5,7 @@ const cors = require('cors');
 const knex = require('knex');
 const morgan = require('morgan');
 const helmet = require('helmet');
+const dotenv = require('dotenv').config();
 
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
@@ -35,8 +36,8 @@ app.use(express.json());
 // })
 
 
-// enable this for prod. disable when pushing to local dev
-// remote with env variable
+// enable this for production. disable when local dev
+
 const db  = knex({
   client: 'pg',
   connection: {
@@ -59,6 +60,7 @@ try {
   db.select('*').from('users')
   .then(data => {
   console.log('db connected');
+  
     
   });
 } catch (error) {

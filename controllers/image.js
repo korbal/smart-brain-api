@@ -1,5 +1,5 @@
 const axios = require('axios');
-
+require('dotenv').config();
 
 /////////////////////////// Clarifai API /////////////////////////////////////
 const USER_ID = 'balint';
@@ -12,6 +12,7 @@ const handleImage = (req, res, db) => {
   const { id } = req.body;
   console.log('-------image----------')
   console.log('req.body: ', req.body)
+  console.log('PAT: ', PAT)
   console.log('-------image----------')
   
   db('users').where('id', '=', id)
@@ -52,10 +53,21 @@ const config = {
     }
 };
 
+
+// axios.post("https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs", data, config)
+//     .then(response => response.data.outputs[0].data.regions[0].region_info.bounding_box)
+//     .then(boxdata => res.json(boxdata))
+//     .catch(err => res.status(400).json('unable to get entries'));
+
 axios.post("https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs", data, config)
-    .then(response => response.data.outputs[0].data.regions[0].region_info.bounding_box)
-    .then(boxdata => res.json(boxdata))
+    .then(response => {
+        let boundingBoxes = response.data.outputs[0].data.regions.map(region => region.region_info.bounding_box);
+        let allBoundingBoxes = [].concat(...boundingBoxes);
+        //console.log(allBoundingBoxes)
+        res.json(allBoundingBoxes)
+    })
     .catch(err => res.status(400).json('unable to get entries'));
+
 }
 
 module.exports = {
