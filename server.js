@@ -26,34 +26,34 @@ app.use(express.json());
 
 // local db - enable this for local development. disable when pushing to prod
 
-const db  = knex({
-  client: 'pg',
-  connection: {
-    host : '127.0.0.1',
-    user : 'postgres',
-    password : 'lofasz',
-    database : 'smart-brain'
-  }
-})
+// const db  = knex({
+//   client: 'pg',
+//   connection: {
+//     host : '127.0.0.1',
+//     user : 'postgres',
+//     password : 'lofasz',
+//     database : 'smart-brain'
+//   }
+// })
 
 
 // enable this for production. disable when local dev
 
-// const db  = knex({
-//   client: 'pg',
-//   connection: {
-//     host : DB_HOST,
-//     port: '5432',
-//     user : DB_USER,
-//     password : DB_PASSWORD,
-//     database : DB_NAME,
-//     ssl: true
-//   },
-//   pool: {
-//     min: 2,
-//     max: 10
-//   }
-// });
+const db  = knex({
+  client: 'pg',
+  connection: {
+    host : DB_HOST,
+    port: '5432',
+    user : DB_USER,
+    password : DB_PASSWORD,
+    database : DB_NAME,
+    ssl: true
+  },
+  pool: {
+    min: 2,
+    max: 10
+  }
+});
 
 
 // connect to the database
@@ -102,10 +102,10 @@ const database = {
 
 // MIDDLEWARE.
 //production cors
-// app.use(cors({origin: 'https://balint-ztm-smartbrain.netlify.app'}));
+app.use(cors({origin: 'https://balint-ztm-smartbrain.netlify.app'}));
 
 //development cors
-app.use(cors({ origin: [/http:\/\/localhost:\d+/, 'https://balint-ztm-smartbrain.netlify.app'] }));
+// app.use(cors({ origin: [/http:\/\/localhost:\d+/, 'https://balint-ztm-smartbrain.netlify.app'] }));
 
 
 
