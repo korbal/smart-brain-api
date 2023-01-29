@@ -6,3 +6,6 @@ node_modules/
 .env.production.local
 package-lock.json
 yarn.lock
+
+# Serverless directories
+.serverless
